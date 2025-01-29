@@ -3,30 +3,23 @@ from indexer.trees.avl_tree import AVLTreeIndex
 from indexer.trees.bst_index import BinarySearchTreeIndex
 from indexer.util.timer import timer
 from indexer.abstract_index import AbstractIndex
-
+from pathlib import Path
 
 def index_files(path: str, index: AbstractIndex) -> None:
-    # path should contain the location of the news articles you want to parse
+
+
+    path = Path(path)
+
     if path is not None:
         print(f"path = {path}")
 
-    # a sample json news article.  assume this is in a file named sample.json
-    sample_filename = "sample.json"
-    sample_json = """
-        {
-            "title": "Some article",
-            "text": "here is the text of a sample news article",
-            "preprocessed_text": ["here", "text", "sample", "news", "article"]
-        }
-    """
-
-    # extract the preprocessed_text words and add them to the index with
-    # sample.json as the file name
-    the_json = json.loads(sample_json)
-    words = the_json["preprocessed_text"]
-
-    for word in words:
-        index.insert(word, sample_filename)
+    for file in path.glob("*.json"):
+        file_data = json.loads(file.read_text(encoding="utf-8"))
+        words = file_data["preprocessed_text"]
+        file_name = file.name
+        print(file_name)
+        for word in words:
+           index.insert(word, file_name)
 
 
 # A simple demo of how the @timer decoration can be used
@@ -38,7 +31,8 @@ def loopy_loop():
 def main():
     # You'll need to change this to be the absolute path to the root folder
     # of the dataset
-    data_directory = "/location/of/downloaded/dataset/of/newsarticles"
+    # Sams directory
+    data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
 
     # Here, we are creating a sample binary search tree index object
     # and sending it to the index_files function
