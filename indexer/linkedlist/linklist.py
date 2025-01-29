@@ -27,24 +27,24 @@ class LinkedList():
             current = current.next
         return print('Node not in linked list.')
 
-    # def remove(self, term):
-    #     current = self.head
-    #     prev = None
+    def remove(self, term):
+        current = self.head
+        prev = None
 
-    #     while current:
-    #         if current.term == term:
-    #             if prev is None:
-    #                 self.head = current.next
-    #             else:
-    #                 prev.next = current.next
-    #             return True
-    #         prev = current
-    #         current = current.next
+        while current:
+            if current.term == term:
+                if prev is None:
+                    self.head = current.next
+                else:
+                    prev.next = current.next
+                return True
+            prev = current
+            current = current.next
 
-    #     return print('Node not in linked list.')
+        return print('Node not in linked list.')
 
-    # def display(self):
-    #     current = self.head
-    #     while current:
-    #         print(f"Term: {current.term}, Document IDs: {current.document_ids}")
-    #         current = current.next
+    def display(self):
+        current = self.head
+        while current:
+            print(f"Term: {current.term}, Document IDs: {current.document_ids}")
+            current = current.next
