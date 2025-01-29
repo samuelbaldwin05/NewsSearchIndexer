@@ -31,8 +31,6 @@ class AVLTreeIndex(BinarySearchTreeIndex):
         - int: The height of the AVLNode. If the node is None, returns 0.
         """
         
-        # TODO: make sure to update height appropriately in the
-        # recursive insert function.
         
         if not node:
             return 0
@@ -49,9 +47,18 @@ class AVLTreeIndex(BinarySearchTreeIndex):
             AVLNode: The new root of the rotated subtree.
         """
         
-        # TODO: implement the right rotation for AVL Tree
+        x = y.left
+        T2 = x.right
 
-        pass
+        # Perform rotation
+        x.right = y
+        y.left = T2
+
+        # Update heights
+        y.height = 1 + max(self._height(y.left), self._height(y.right))
+        x.height = 1 + max(self._height(x.left), self._height(x.right))
+
+        return x
 
     def _rotate_left(self, x: AVLNode) -> AVLNode:
         """
@@ -62,9 +69,18 @@ class AVLTreeIndex(BinarySearchTreeIndex):
             AVLNode: The new root of the subtree after rotation.
         """
         
-        # TODO: implement the left rotation for AVL Tree
-        
-        pass
+        y = x.right
+        T2 = y.left
+
+        # Perform rotation
+        y.left = x
+        x.right = T2
+
+        # Update heights
+        x.height = 1 + max(self._height(x.left), self._height(x.right))
+        y.height = 1 + max(self._height(y.left), self._height(y.right))
+
+        return y
 
     def _insert_recursive(self, current: Optional[AVLNode], key: Any, value: Any) -> AVLNode:
         """
@@ -76,14 +92,44 @@ class AVLTreeIndex(BinarySearchTreeIndex):
         Returns:
             AVLNode: The updated AVL tree with the new node inserted.
         """
-        # TODO: Implement a proper recursive insert function for an
-        # AVL tree including updating height and balancing if a
-        # new node is inserted. 
-        
-        # TODO: Remove or comment out this line once you've implemented
-        # the AVL insert functionality 
-        current = super()._insert_recursive(current, key, value)
- 
+        # Perform standard BST insertion (but with AVLNode)
+        if current is None:
+            new_node = AVLNode(key)
+            new_node.add_value(value)
+            return new_node
+        elif key < current.key:
+            current.left = self._insert_recursive(current.left, key, value)
+        elif key > current.key:
+            current.right = self._insert_recursive(current.right, key, value)
+        else:
+            # Key exists: append value and return early (no structural changes)
+            current.add_value(value)
+            return current
+
+        # Update height of current node
+        current.height = 1 + max(self._height(current.left), self._height(current.right))
+
+        # Check balance factor and rotate if needed
+        balance = self._height(current.left) - self._height(current.right)
+
+        # LL
+        if balance > 1 and key < current.left.key:
+            return self._rotate_right(current)
+
+        # RR
+        if balance < -1 and key > current.right.key:
+            return self._rotate_left(current)
+
+        # LR
+        if balance > 1 and key > current.left.key:
+            current.left = self._rotate_left(current.left)
+            return self._rotate_right(current)
+
+        # RL
+        if balance < -1 and key < current.right.key:
+            current.right = self._rotate_right(current.right)
+            return self._rotate_left(current)
+
         return current
 
     def insert(self, key: Any, value: Any) -> None:
