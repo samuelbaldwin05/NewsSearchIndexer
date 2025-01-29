@@ -1,6 +1,23 @@
-from ll_node import Node
+class Node:
+    def __init__(self, term, document_id):
+        self.term = term
+        self.document_ids = [document_id]
+        self.next = None
 
-class LinkedList():
+    def add_node(self, value):
+        self.document_ids.append(value)
+
+    def get_values_count(self):
+        """
+        Returns the number of values stored in the node.
+
+        Returns:
+            int: The number of values stored in the node.
+        """
+        return len(self.document_ids)
+
+
+class LinkedList:
     
     def __init__(self):
         self.head = None
@@ -10,7 +27,7 @@ class LinkedList():
         current = self.head
         while current is not None:
             if current.term == term:
-                current.document_ids.add(document_id)
+                current.document_ids.append(document_id)
                 return
             current = current.next
 
