@@ -14,4 +14,4 @@ class Node:
         Returns:
             int: The number of values stored in the node.
         """
-        return len(self.values)
+        return len(self.document_ids)
