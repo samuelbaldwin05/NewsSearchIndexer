@@ -1,12 +1,13 @@
 import json
+import pickle
 from indexer.trees.avl_tree import AVLTreeIndex
 from indexer.trees.bst_index import BinarySearchTreeIndex
 from indexer.util.timer import timer
 from indexer.abstract_index import AbstractIndex
 from pathlib import Path
 
+@timer
 def index_files(path: str, index: AbstractIndex) -> None:
-
 
     path = Path(path)
 
@@ -25,11 +26,19 @@ def index_files(path: str, index: AbstractIndex) -> None:
 # def loopy_loop():
 #     total = sum((x for x in range(0, 1000000)))
 
+def save_pickle(index, file_name):
+    with open(file_name, "wb") as file:
+        pickle.dump(index, file)
+
+def access_pickle(file_name):
+    with open(file_name, "rb") as file:
+        return pickle.load(file)
 
 def main():
     # You'll need to change this to be the absolute path to the root folder
     # of the dataset
     # Sams directory
+    # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\USFinancialNewsArticles-preprocessed\April2018"
     data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
 
     # Here, we are creating a sample binary search tree index object
@@ -53,6 +62,9 @@ def main():
     print(len(keys))
     print(keys)
     print(avl_index._height(avl_index.root))
+    # save_pickle(avl_index, "avl_index.pkl")
+    #loaded_index = access_pickle("avl_index.pkl")
+    #print(loaded_index.get_keys())
     # quick demo of how to use the timing decorator included
     # in indexer.util
     # loopy_loop()
