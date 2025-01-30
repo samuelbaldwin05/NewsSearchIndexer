@@ -1,12 +1,11 @@
 from typing import List, Optional, Any, Generator
 from abc import ABC, abstractmethod
-
-# from indexer.trees.bst_node import BSTNode
+from indexer.trees.bst_node import BSTNode
 
 
 class AbstractIndex(ABC):
     def __init__(self):
-        #self.root: Optional[BSTNode] = None
+        self.root: Optional[BSTNode] = None
         pass
 
     @abstractmethod

@@ -1,5 +1,5 @@
 from typing import Optional, Any, List, Generator
-
+from indexer.util.timer import timer
 from indexer.abstract_index import AbstractIndex
 from indexer.trees.bst_node import BSTNode
 
@@ -29,7 +29,7 @@ class BinarySearchTreeIndex(AbstractIndex):
     def __init__(self):
         super().__init__()
         self.root: Optional[BSTNode] = None
-    
+
     def _insert_recursive(self, current_node: Optional[BSTNode], key: Any, value: Any) -> BSTNode:
         """
         Recursively inserts a new node with the given key and value into the binary search tree.
