@@ -3,8 +3,7 @@
   
 class HashMapIndex(): 
     def __init__(self, capacity): 
-        self.capacity = capacity 
-        self.size = 0
+        self.capacity = capacity
         self.table = [None] * capacity 
   
     def _hash(self, term): 
@@ -15,8 +14,7 @@ class HashMapIndex():
   
         if self.table[index] is None: 
             self.table[index] = Node(term, document_id) 
-            self.size += 1
-        else: 
+        else:
             current = self.table[index] 
             while current: 
                 if current.term == term: 
@@ -29,8 +27,7 @@ class HashMapIndex():
             new_node = Node(term, document_id) 
             new_node.next = self.table[index] 
             self.table[index] = new_node 
-            self.size += 1
-  
+
     def search(self, term): 
         index = self._hash(term) 
   
@@ -54,7 +51,6 @@ class HashMapIndex():
                     previous.next = current.next
                 else: 
                     self.table[index] = current.next
-                self.size -= 1
                 return
             previous = current 
             current = current.next
