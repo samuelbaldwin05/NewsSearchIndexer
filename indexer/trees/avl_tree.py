@@ -16,7 +16,7 @@ class AVLTreeIndex(BinarySearchTreeIndex):
             Inserts a new node with key and value into the AVL Tree
     """
     
-    def __init(self):
+    def __init__(self):
        super().__init__()
        self.root: Optional[AVLNode] = None 
     
