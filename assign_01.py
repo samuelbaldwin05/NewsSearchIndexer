@@ -49,8 +49,10 @@ def main():
     # AVL Tree tests
     avl_index = AVLTreeIndex()
     index_files(data_directory, avl_index)
-    print(avl_index.get_keys())
-
+    keys = avl_index.get_keys()
+    print(len(keys))
+    print(keys)
+    print(avl_index._height(avl_index.root))
     # quick demo of how to use the timing decorator included
     # in indexer.util
     # loopy_loop()
