@@ -11,14 +11,16 @@ def index_files(path: str, index: AbstractIndex) -> None:
     path = Path(path)
 
     if path is not None:
-        print(f"path = {path}")
+        print(f"Starting to index files in {path}")
 
-    for file in path.glob("*.json"):
-        file_data = json.loads(file.read_text(encoding="utf-8"))
-        words = file_data["preprocessed_text"]
-        file_name = file.name
-        for word in words:
-            index.insert(word, file_name)
+    # Go through all subfolders
+    for file in path.rglob("*.json"):
+        if file.is_file():
+            file_data = json.loads(file.read_text(encoding="utf-8"))
+            words = file_data["preprocessed_text"]
+            file_name = file.name
+            for word in words:
+                index.insert(word, file_name)
 
 # @timer
 # def index_words(path: str, index: AbstractIndex) -> None:
@@ -54,7 +56,8 @@ def main():
     # of the dataset
     # Sams directory
     # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\USFinancialNewsArticles-preprocessed\April2018"
-    data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
+    # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
+    data_directory = r"/Users/jeffreykrapf/Desktop/ds4300/USFinancialNewsArticles-preprocessed"
 
     # Here, we are creating a sample binary search tree index object
     # and sending it to the index_files function
@@ -76,14 +79,14 @@ def main():
     index_files(data_directory, avl_index)
     keys = avl_index.get_keys()
     print(len(keys))
-    print(keys)
+    # print(keys)
     print("Height:", avl_index._height(avl_index.root))
 
     #search = 'preproc-news_0001728.json'
-    search = 'act'
-    search_results = avl_index.search(search)
-    print(f"Files with {search}: {search_results}")
-    # save_pickle(avl_index, "avl_index.pkl")
+    # search = 'act'
+    # search_results = avl_index.search(search)
+    # print(f"Files with {search}: {search_results}")
+    save_pickle(avl_index, "avlindex.pkl")
     #loaded_index = access_pickle("avl_index.pkl")
     #print(loaded_index.get_keys())
     # quick demo of how to use the timing decorator included
