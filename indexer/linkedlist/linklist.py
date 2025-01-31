@@ -22,7 +22,7 @@ class LinkedList:
     def __init__(self):
         self.head = None
 
-    def add(self, term, document_id):
+    def insert(self, term, document_id):
         # Checking to see if term we are trying to add is in the list
         current = self.head
         while current is not None:

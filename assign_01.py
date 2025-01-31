@@ -1,12 +1,17 @@
 import json
 import pickle
 import re
+
+from indexer.linkedlist.linklist import LinkedList
 from indexer.maps.hash_map import HashMapIndex
 from indexer.trees.avl_tree import AVLTreeIndex
 from indexer.trees.bst_index import BinarySearchTreeIndex
 from indexer.util.timer import timer
 from indexer.abstract_index import AbstractIndex
 from pathlib import Path
+
+from tests.test_ll import linked_list
+
 
 def process_titles(title):
     """ Given a title, process the title, splitting words into spaces, removing punctuation"""
@@ -65,27 +70,36 @@ def access_pickle(file_name):
 
 def main():
     # # Sams directory
-    # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\USFinancialNewsArticles-preprocessed"
-    data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
+    # # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\USFinancialNewsArticles-preprocessed"
+    # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
+    data_directory = '/Users/michaelmaaseide/Desktop/P01-verify-dataset'
     #
     # # Here, we are creating a sample binary search tree index object
     # # and sending it to the index_files function
-    bst_index = BinarySearchTreeIndex()
-    index_files(data_directory, bst_index)
-    # #
-    # # # As a gut check, we are printing the keys that were added to the
-    # # # index in order.
-    print(bst_index.get_keys_in_order())
-
-    search_word = 'act'
-    search_results = bst_index.search(search_word)
-    print(f"Files with {search_word}: {search_results}")
+    # bst_index = BinarySearchTreeIndex()
+    # index_files(data_directory, bst_index)
+    # # #
+    # # # # As a gut check, we are printing the keys that were added to the
+    # # # # index in order.
+    # print(bst_index.get_keys_in_order())
     #
+    # search_word = 'act'
+    # search_results = bst_index.search(search_word)
+    # print(f"Files with {search_word}: {search_results}")
+    # #
     # # As a gut check, we are printing the keys that were added to the
     # # index in order.
     # print(bst_index.get_keys_in_order())
-    #
-    # # AVL Tree tests
+
+
+    # # Getting linked list pickled
+    # ll_index = LinkedList()
+    # index_files(data_directory, ll_index)
+    # save_pickle(ll_index, "llindex.pkl")
+
+
+
+    # AVL Tree tests
     # avl_index = AVLTreeIndex()
     # #index_words(data_directory, avl_index)
     # index_files(data_directory, avl_index)
@@ -99,17 +113,17 @@ def main():
     # # search_results = avl_index.search(search)
     # # print(f"Files with {search}: {search_results}")
     # save_pickle(avl_index, "avlindex.pkl")
-    # #loaded_index = access_pickle("avl_index.pkl")
-    # #print(loaded_index.get_keys())
-    # # quick demo of how to use the timing decorator included
-    # # in indexer.util
-    # # loopy_loop()]
-    # # print('-' * 20)
-    # # hash_index = HashMapIndex(23)
-    # # index_files(data_directory, hash_index)
-    # # search = 'act'
-    # # search_results = hash_index.search(search)
-    # # print(f"Files with {search}: {search_results}")
+    #loaded_index = access_pickle("avl_index.pkl")
+    #print(loaded_index.get_keys())
+    # quick demo of how to use the timing decorator included
+    # in indexer.util
+    # loopy_loop()]
+    # print('-' * 20)
+    # hash_index = HashMapIndex(23)
+    # index_files(data_directory, hash_index)
+    # search = 'act'
+    # search_results = hash_index.search(search)
+    # print(f"Files with {search}: {search_results}")
 
 if __name__ == "__main__":
     main()
