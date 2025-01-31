@@ -9,7 +9,7 @@ class HashMapIndex():
     def _hash(self, term): 
         return hash(term) % self.capacity 
   
-    def add(self, term, document_id): 
+    def insert(self, term, document_id):
         index = self._hash(term) 
   
         if self.table[index] is None: 
@@ -17,12 +17,9 @@ class HashMapIndex():
         else:
             current = self.table[index] 
             while current: 
-                if current.term == term: 
-                    if document_id not in current.value:
-                        current.value.append(document_id) 
-                        return
-                    else:
-                        return
+                if current.term == term:
+                    current.value.append(document_id)
+                    return
                 current = current.next
             new_node = Node(term, document_id) 
             new_node.next = self.table[index] 
