@@ -32,8 +32,8 @@ def index_files(path: str, index: AbstractIndex) -> None:
         words = file_data["preprocessed_text"]
         file_name = file.name
 
-        # Index author last name
-        author_last_name = last_name(file_data["author_name"])
+        # Index author last name 
+        author_last_name = last_name(file_data["author"])
         if len(author_last_name) != 0:
             index.insert(author_last_name, file_name)
 
@@ -43,9 +43,12 @@ def index_files(path: str, index: AbstractIndex) -> None:
             index.insert(url, file_name)
 
         # Include list of preprocessed title words in words to be indexed
-        title = process_titles(file_data["title"])
-        if len(title) != 0:
-            words.append(title)
+        title_words = process_titles(file_data["title"])
+        if len(title_words) != 0:
+            for title_word in title_words:
+                if len(title_word) != 0:
+                    index.insert(title_word, file_name)
+
 
         for word in words:
             index.insert(word, file_name)
@@ -61,23 +64,22 @@ def access_pickle(file_name):
         return pickle.load(file)
 
 def main():
-    print(process_titles(""))
     # # Sams directory
     # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\USFinancialNewsArticles-preprocessed"
     data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
     #
     # # Here, we are creating a sample binary search tree index object
     # # and sending it to the index_files function
-    # # bst_index = BinarySearchTreeIndex()
-    # # index_files(data_directory, bst_index)
+    bst_index = BinarySearchTreeIndex()
+    index_files(data_directory, bst_index)
     # #
     # # # As a gut check, we are printing the keys that were added to the
     # # # index in order.
-    # # print(bst_index.get_keys_in_order())
-    # #
-    # # search_word = 'act'
-    # # search_results = bst_index.search(search_word)
-    # # print(f"Files with {search_word}: {search_results}")
+    print(bst_index.get_keys_in_order())
+
+    search_word = 'act'
+    search_results = bst_index.search(search_word)
+    print(f"Files with {search_word}: {search_results}")
     #
     # # As a gut check, we are printing the keys that were added to the
     # # index in order.

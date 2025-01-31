@@ -111,7 +111,6 @@ class AVLTreeIndex(BinarySearchTreeIndex):
 
         # Check balance factor and rotate if needed
         balance = self._height(current.left) - self._height(current.right)
-
         # LL
         if balance > 1 and key < current.left.key:
             return self._rotate_right(current)
