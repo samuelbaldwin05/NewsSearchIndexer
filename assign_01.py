@@ -35,7 +35,10 @@ def domain_name(url):
     # Items after second /  (www.site.com)
     domain = domain[2].split(".")
     # Split after . www, site, com, then join site and com
-    return domain[1] + "." + domain[2]
+    if len(domain) > 2:
+        return domain[1] + "." + domain[2]
+    else:
+        return domain[0] + "." + domain[1]
 
 
 @timer
@@ -46,7 +49,10 @@ def index_files(path: str, index: AbstractIndex) -> None:
         print(f"path = {path}")
 
     for file in path.rglob("*.json"):
+        # Load data
         file_data = json.loads(file.read_text(encoding="utf-8"))
+
+        # Get preprocessed text and filename
         words = file_data["preprocessed_text"]
         file_name = file.name
 
@@ -56,7 +62,6 @@ def index_files(path: str, index: AbstractIndex) -> None:
             index.insert(author_last_name, file_name)
 
         # Index url
-
         url = file_data["url"]
         if len(url) != 0:
             domain = domain_name(url)
@@ -69,7 +74,7 @@ def index_files(path: str, index: AbstractIndex) -> None:
                 if len(title_word) != 0:
                     index.insert(title_word, file_name)
 
-
+        # Insert
         for word in words:
             index.insert(word, file_name)
 
@@ -84,68 +89,53 @@ def access_pickle(file_name):
         return pickle.load(file)
 
 def main():
-    # print(domain_name("https://www.cnbc.com/2018/04/01/mexicos-andres-manuel-lopez-obrador-hits-out-at-trump.html"))
-    # # Sams directory
-    # # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\USFinancialNewsArticles-preprocessed"
-    data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
-    #data_directory = '/Users/michaelmaaseide/Desktop/P01-verify-dataset'
-    #
+    # Directories
+    # Sams directory
+    data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\USFinancialNewsArticles-preprocessed"
+    # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
+    # Michaels directory
+    # data_directory = '/Users/michaelmaaseide/Desktop/P01-verify-dataset'
+
     # Sorted Array
-    sortarr_index = SortedArray()
-    index_files(data_directory, sortarr_index)
-    search = "act"
-    print(sortarr_index.search(search))
-    print(sortarr_index.result())
-    # # Here, we are creating a sample binary search tree index object
-    # # and sending it to the index_files function
+    # sortarr_index = SortedArray()
+    # index_files(data_directory, sortarr_index)
+    # search = "act"
+    # print(sortarr_index.search(search))
+    # print(sortarr_index.result())
+
+    # BST test
     # bst_index = BinarySearchTreeIndex()
     # index_files(data_directory, bst_index)
-
-    # As a gut check, we are printing the keys that were added to the
-    # index in order.
     # print(bst_index.get_keys_in_order())
-    #
     # search_word = 'act'
     # search_results = bst_index.search(search_word)
     # print(f"Files with {search_word}: {search_results}")
-    # #
-    # # As a gut check, we are printing the keys that were added to the
-    # # index in order.
     # print(bst_index.get_keys_in_order())
 
-
-    # # Getting linked list pickled
+    # Linked List
     # ll_index = LinkedList()
     # index_files(data_directory, ll_index)
     # save_pickle(ll_index, "llindex.pkl")
 
-
-
-    # # AVL Tree tests
+    # AVL Tree
     # avl_index = AVLTreeIndex()
-    # #index_words(data_directory, avl_index)
     # index_files(data_directory, avl_index)
     # keys = avl_index.get_keys()
     # print(len(keys))
-    # # print(keys)
     # print("Height:", avl_index._height(avl_index.root))
-    #
-    # # = 'preproc-news_0001728.json'
     # search = 'act'
     # search_results = avl_index.search(search)
     # print(f"Files with {search}: {search_results}")
     # save_pickle(avl_index, "avlindex.pkl")
-    #loaded_index = access_pickle("avl_index.pkl")
-    #print(loaded_index.get_keys())
-    # quick demo of how to use the timing decorator included
-    # in indexer.util
-    # loopy_loop()]
-    # print('-' * 20)
-    # hash_index = HashMapIndex(23)
-    # index_files(data_directory, hash_index)
-    # search = 'act'
-    # search_results = hash_index.search(search)
-    # print(f"Files with {search}: {search_results}")
+    # loaded_index = access_pickle("avl_index.pkl")
+    # print(loaded_index.get_keys())
+
+    # Hash Map
+    hash_index = HashMapIndex(250049)
+    index_files(data_directory, hash_index)
+    search = 'act'
+    search_results = hash_index.search(search)
+    print(f"Files with {search}: {search_results}")
 
 if __name__ == "__main__":
     main()
