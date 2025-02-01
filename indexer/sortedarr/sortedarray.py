@@ -7,8 +7,7 @@ class Node:
 
     def add_file(self, filename):
         """Adds file to node list of values"""
-        if filename not in self.values:
-            self.values.append(filename)
+        self.values.append(filename)
 
 class SortedArray:
     def __init__(self):
@@ -35,6 +34,11 @@ class SortedArray:
         index, exists = self.binary_search(term)
         if exists:
             self.keys[index].add_file(filename)
+        else:
+            new_node = Node(term)
+            new_node.add_file(filename)
+            self.keys.insert(index, new_node)
+
     def search(self, term):
         """ Searches for a term"""
         index, exists = self.binary_search(term)

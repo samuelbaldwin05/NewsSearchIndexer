@@ -2,6 +2,9 @@ import json
 import pickle
 import re
 
+from streamlit.elements.lib.options_selector_utils import index_
+
+from indexer.sortedarr.sortedarray import SortedArray
 from indexer.linkedlist.linklist import LinkedList
 from indexer.maps.hash_map import HashMapIndex
 from indexer.trees.avl_tree import AVLTreeIndex
@@ -22,6 +25,7 @@ def process_titles(title):
 
 def last_name(author_name):
     """ Given an authors name, return their last name"""
+    author_name = author_name.lower()
     names = author_name.split(" ")
     return names[-1]
 
@@ -54,10 +58,8 @@ def index_files(path: str, index: AbstractIndex) -> None:
         # Index url
 
         url = file_data["url"]
-        print(url)
         if len(url) != 0:
             domain = domain_name(url)
-            print(domain)
             index.insert(domain, file_name)
 
         # Include list of preprocessed title words in words to be indexed
@@ -88,13 +90,19 @@ def main():
     data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
     #data_directory = '/Users/michaelmaaseide/Desktop/P01-verify-dataset'
     #
+    # Sorted Array
+    sortarr_index = SortedArray()
+    index_files(data_directory, sortarr_index)
+    search = "act"
+    print(sortarr_index.search(search))
+    print(sortarr_index.result())
     # # Here, we are creating a sample binary search tree index object
     # # and sending it to the index_files function
     # bst_index = BinarySearchTreeIndex()
     # index_files(data_directory, bst_index)
-    # # #
-    # # # # As a gut check, we are printing the keys that were added to the
-    # # # # index in order.
+
+    # As a gut check, we are printing the keys that were added to the
+    # index in order.
     # print(bst_index.get_keys_in_order())
     #
     # search_word = 'act'
@@ -113,16 +121,16 @@ def main():
 
 
 
-    # AVL Tree tests
-    avl_index = AVLTreeIndex()
-    #index_words(data_directory, avl_index)
-    index_files(data_directory, avl_index)
-    keys = avl_index.get_keys()
-    print(len(keys))
-    # print(keys)
-    print("Height:", avl_index._height(avl_index.root))
-
-    #search = 'preproc-news_0001728.json'
+    # # AVL Tree tests
+    # avl_index = AVLTreeIndex()
+    # #index_words(data_directory, avl_index)
+    # index_files(data_directory, avl_index)
+    # keys = avl_index.get_keys()
+    # print(len(keys))
+    # # print(keys)
+    # print("Height:", avl_index._height(avl_index.root))
+    #
+    # # = 'preproc-news_0001728.json'
     # search = 'act'
     # search_results = avl_index.search(search)
     # print(f"Files with {search}: {search_results}")
