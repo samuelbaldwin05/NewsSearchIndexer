@@ -29,9 +29,9 @@ def domain_name(url):
     """Given a url return the domain name"""
     domain = url.split("/")
     # Items after second /  (www.site.com)
-    domain = domain[2].split("www.")
-    # Split after www
-    return domain[1]
+    domain = domain[2].split(".")
+    # Split after . www, site, com, then join site and com
+    return domain[1] + "." + domain[2]
 
 
 @timer
@@ -52,8 +52,12 @@ def index_files(path: str, index: AbstractIndex) -> None:
             index.insert(author_last_name, file_name)
 
         # Index url
-        domain = domain_name(file_data["url"])
-        if len(domain) != 0:
+
+        url = file_data["url"]
+        print(url)
+        if len(url) != 0:
+            domain = domain_name(url)
+            print(domain)
             index.insert(domain, file_name)
 
         # Include list of preprocessed title words in words to be indexed
@@ -78,11 +82,11 @@ def access_pickle(file_name):
         return pickle.load(file)
 
 def main():
-    print(domain_name("https://www.cnbc.com/2018/04/01/mexicos-andres-manuel-lopez-obrador-hits-out-at-trump.html"))
+    # print(domain_name("https://www.cnbc.com/2018/04/01/mexicos-andres-manuel-lopez-obrador-hits-out-at-trump.html"))
     # # Sams directory
     # # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\USFinancialNewsArticles-preprocessed"
-    # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
-    data_directory = '/Users/michaelmaaseide/Desktop/P01-verify-dataset'
+    data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
+    #data_directory = '/Users/michaelmaaseide/Desktop/P01-verify-dataset'
     #
     # # Here, we are creating a sample binary search tree index object
     # # and sending it to the index_files function
@@ -110,18 +114,18 @@ def main():
 
 
     # AVL Tree tests
-    # avl_index = AVLTreeIndex()
-    # #index_words(data_directory, avl_index)
-    # index_files(data_directory, avl_index)
-    # keys = avl_index.get_keys()
-    # print(len(keys))
-    # # print(keys)
-    # print("Height:", avl_index._height(avl_index.root))
-    #
-    # #search = 'preproc-news_0001728.json'
-    # # search = 'act'
-    # # search_results = avl_index.search(search)
-    # # print(f"Files with {search}: {search_results}")
+    avl_index = AVLTreeIndex()
+    #index_words(data_directory, avl_index)
+    index_files(data_directory, avl_index)
+    keys = avl_index.get_keys()
+    print(len(keys))
+    # print(keys)
+    print("Height:", avl_index._height(avl_index.root))
+
+    #search = 'preproc-news_0001728.json'
+    # search = 'act'
+    # search_results = avl_index.search(search)
+    # print(f"Files with {search}: {search_results}")
     # save_pickle(avl_index, "avlindex.pkl")
     #loaded_index = access_pickle("avl_index.pkl")
     #print(loaded_index.get_keys())
