@@ -1,0 +1,3 @@
+Avl Tree:  Took 296390477000 ns OR 296390.477 ms
+BST:  Took 95153874000 ns OR 95153.874 ms
+Hash Map:  Took 46295810000 ns OR 46295.81 ms
