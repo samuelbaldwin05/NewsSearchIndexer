@@ -31,7 +31,7 @@ class LinkedList:
                 return
             current = current.next
 
-        # If the node isn't in the list add it to the list
+        # If the node isnt in the list add it to the list
         add = Node(term, document_id)
         add.next = self.head
         self.head = add

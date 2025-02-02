@@ -2,8 +2,6 @@ import json
 import pickle
 import re
 
-from streamlit.elements.lib.options_selector_utils import index_
-
 from indexer.sortedarr.sortedarray import SortedArray
 from indexer.linkedlist.linklist import LinkedList
 from indexer.maps.hash_map import HashMapIndex
