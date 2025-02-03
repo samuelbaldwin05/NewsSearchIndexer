@@ -31,10 +31,10 @@ class HashMapIndex():
         current = self.table[index] 
         while current: 
             if current.term == term: 
-                return (current.value)
+                return current.value
             current = current.next
   
-        raise KeyError(term) 
+        return None
   
     def remove(self, term): 
         index = self._hash(term) 

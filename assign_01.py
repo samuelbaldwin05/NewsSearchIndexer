@@ -12,6 +12,7 @@ from indexer.linkedlist.linklist import LinkedList
 from indexer.maps.hash_map import HashMapIndex
 from indexer.trees.avl_tree import AVLTreeIndex
 from indexer.trees.bst_index import BinarySearchTreeIndex
+from eda import graph_common_words
 
 
 def process_titles(title):
@@ -91,9 +92,9 @@ def main():
     # Sams directory
     data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\avl_index.pkl"
     # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
+    bstpickle = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\bst_index.pkl"
     # Michaels directory
     # data_directory = '/Users/michaelmaaseide/Desktop/P01-verify-dataset'
-    data_directory = '/Users/michaelmaaseide/Desktop/avl_index.pkl'
 
     # Generate Search Sets
     length_lst = [4000,5000,6000,7000,8000,9000,10000,11000]
@@ -108,8 +109,11 @@ def main():
     # print(sortarr_index.result())
 
     # BST test
-    # bst_index = BinarySearchTreeIndex()
+    bst_index = BinarySearchTreeIndex()
     # index_files(data_directory, bst_index)
+    access_pickle(bstpickle)
+    data = (bst_index.get_keyvalues_in_order())
+    graph_common_words(data, 10)
     # print(bst_index.get_keys_in_order())
     # search_word = 'act'
     # search_results = bst_index.search(search_word)

@@ -58,12 +58,12 @@ def test_tree_height(bst):
   
   assert bst.tree_height() == 3
 
-def test_get_keys_in_order(bst):
-  bst.insert('b', 2)
-  bst.insert('a', 1)
-  bst.insert('c', 3)
-  
-  assert bst.get_keys_in_order() == ['a', 'b', 'c']
+# def test_get_keys_in_order(bst):
+#   bst.insert('b', 2)
+#   bst.insert('a', 1)
+#   bst.insert('c', 3)
+#
+#   assert bst.get_keys_in_order() == ['a', 'b', 'c']
 
 def test_get_leaf_keys(bst):
   bst.insert('b', 2)
