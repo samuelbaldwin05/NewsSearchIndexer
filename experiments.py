@@ -15,6 +15,12 @@ def generate_unique_id():
 
 @timer
 def experiment(df, structure, search, com_type, mem_size, index_type, n):
+    """
+    Parameters: Takes in df for experiment data, indexing structure, search set, and experiment data points
+
+    Does: Searches for each token in the searching set to see if its in the indexing structure, records all the data
+    points from the experiment and then appends the data to our df
+    """
 
     num_tokens = len(search)
     uniqueid = generate_unique_id()
@@ -46,7 +52,7 @@ def access_pickle(file_name):
 
 
 def main():
-
+    # Creating df to be turned into our experiment csv
     columns = [
         "run_id",
         "compute_proc_type",
@@ -57,15 +63,17 @@ def main():
         "search_set_base_size",
         "search_time"
     ]
-
-
     df = pd.DataFrame(columns=columns)
+
+    # Getting indexing structure into file
     pickle_data = '/Users/michaelmaaseide/Desktop/avl_index.pkl'
     avl = access_pickle(pickle_data)
 
+    # Creating searching sets
     length_lst = [4000,5000,6000,7000,8000,9000,10000,11000]
     sets = generate_search_set(length_lst, pickle_data)
 
+    # Running experiment on searching set one time
     new_df = experiment(df, avl, sets[0], 'M2 Max', 32, 'AVL', length_lst[0])
     print(new_df['num_tokens_indexed'])
     print(new_df['num_docs_indexed'])
