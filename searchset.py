@@ -14,8 +14,8 @@ def generate_search_set(n, data_directory):
     Generate a search set using indexed terms with the given contraints a,b,c,d
     Returns a shuffled list of the terms
     """
-    pickled = access_pickle(data_directory)
-    keys = pickled.get_keys()
+    avl = access_pickle(data_directory)
+    keys = avl.get_keys()
 
     search_sets = []
     for i in range(8):
