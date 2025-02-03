@@ -45,7 +45,7 @@ class SortedArray:
         if exists:
             return self.keys[index].values
         else:
-            return None
+            return []
 
     def result(self):
         """ Displays entire sorted array"""

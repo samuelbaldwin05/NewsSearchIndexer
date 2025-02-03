@@ -34,7 +34,7 @@ class HashMapIndex():
                 return current.value
             current = current.next
   
-        return None
+        return []
   
     def remove(self, term): 
         index = self._hash(term) 

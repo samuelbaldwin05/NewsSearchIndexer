@@ -63,12 +63,10 @@ class BinarySearchTreeIndex(AbstractIndex):
             key (Any): The key to search for.
         Returns:
             List[Any]: A list of values associated with the key.
-        Raises:
-            KeyError: If the key is not found in the tree.
         """
         
         if node is None:
-            return None
+            return []
         if key < node.key:
             return self._search_recursive(node.left, key)
         elif key > node.key:

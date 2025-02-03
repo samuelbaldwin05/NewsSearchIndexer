@@ -42,7 +42,7 @@ class LinkedList:
             if current.term == term:
                 return current.document_ids
             current = current.next
-        return None
+        return []
 
     def remove(self, term):
         current = self.head
