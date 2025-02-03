@@ -36,7 +36,7 @@ def experiment(df, structure, search, com_type, mem_size, index_type, n):
         "search_time": 00
     }
 
-    df = df.append(new_row, ignore_index=True)
+    return df._append(new_row, ignore_index=True)
 
 
 def access_pickle(file_name):
@@ -66,9 +66,10 @@ def main():
     length_lst = [4000,5000,6000,7000,8000,9000,10000,11000]
     sets = generate_search_set(length_lst, pickle_data)
 
-    experiment(df, avl, sets[0], 'M2 Max', 32, 'AVL', length_lst[0])
-    print(df)
-
+    new_df = experiment(df, avl, sets[0], 'M2 Max', 32, 'AVL', length_lst[0])
+    print(new_df['num_tokens_indexed'])
+    print(new_df['num_docs_indexed'])
+    print(new_df['search_set_base_size'])
 
 
 if __name__ == "__main__":
