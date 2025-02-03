@@ -2,15 +2,16 @@ import random
 import string
 from indexer.trees.avl_tree import AVLTreeIndex
 from assign_01 import index_files
+import pickle
 
-def generate_search_set(n, data_directory):
+def generate_search_set_pickle(n, data_directory):
     """
     Generate a search set using indexed terms with the given contraints a,b,c,d
     Returns a shuffled list of the terms
     """
-    avl_index = AVLTreeIndex()
-    index_files(data_directory, avl_index)
-    keys = avl_index.get_keys()
+    with open(data_directory, "rb") as file:
+        pickled = pickle.load(file)
+        keys = pickled.get_keys()
 
     search_sets = []
     for i in range(8):
@@ -24,11 +25,11 @@ def generate_search_set(n, data_directory):
         search_sets.append(search_set)
 
     return search_sets
-
 def main():
 
-    data_directory = '/Users/michaelmaaseide/desktop/USFinancialNewsArticles-preprocessed'
-    search_sets = generate_search_set(4000, data_directory)
+    # data_directory = '/Users/michaelmaaseide/desktop/USFinancialNewsArticles-preprocessed'
+    data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\avl_index.pkl"
+    search_sets = generate_search_set_pickle(4000, data_directory)
     print(search_sets)
 
 

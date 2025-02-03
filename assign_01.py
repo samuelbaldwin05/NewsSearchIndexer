@@ -89,7 +89,7 @@ def access_pickle(file_name):
 def main():
     # Directories
     # Sams directory
-    data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\USFinancialNewsArticles-preprocessed"
+    data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\avl_index.pkl"
     # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
     # Michaels directory
     # data_directory = '/Users/michaelmaaseide/Desktop/P01-verify-dataset'
@@ -125,15 +125,15 @@ def main():
     # search_results = avl_index.search(search)
     # print(f"Files with {search}: {search_results}")
     # save_pickle(avl_index, "avlindex.pkl")
-    # loaded_index = access_pickle("avl_index.pkl")
-    # print(loaded_index.get_keys())
+    loaded_index = access_pickle(data_directory)
+    #print(loaded_index.get_keys())
 
-    # Hash Map
-    hash_index = HashMapIndex(250049)
-    index_files(data_directory, hash_index)
-    search = 'act'
-    search_results = hash_index.search(search)
-    print(f"Files with {search}: {search_results}")
+    # # Hash Map
+    # hash_index = HashMapIndex(250049)
+    # index_files(data_directory, hash_index)
+    # search = 'act'
+    # search_results = hash_index.search(search)
+    # print(f"Files with {search}: {search_results}")
 
 if __name__ == "__main__":
     main()
