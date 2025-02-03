@@ -1,17 +1,17 @@
 import json
 import pickle
 import re
-
+from pathlib import Path
+from searchset import generate_search_set
+#from experiments import experiments
+from indexer.util.timer import timer
+from indexer.abstract_index import AbstractIndex
+# Structure imports
 from indexer.sortedarr.sortedarray import SortedArray
 from indexer.linkedlist.linklist import LinkedList
 from indexer.maps.hash_map import HashMapIndex
 from indexer.trees.avl_tree import AVLTreeIndex
 from indexer.trees.bst_index import BinarySearchTreeIndex
-from indexer.util.timer import timer
-from indexer.abstract_index import AbstractIndex
-from pathlib import Path
-
-from tests.test_ll import linked_list
 
 
 def process_titles(title):
@@ -29,6 +29,7 @@ def last_name(author_name):
 
 def domain_name(url):
     """Given a url return the domain name"""
+    url = url.lower()
     domain = url.split("/")
     # Items after second /  (www.site.com)
     domain = domain[2].split(".")
@@ -37,7 +38,6 @@ def domain_name(url):
         return domain[1] + "." + domain[2]
     else:
         return domain[0] + "." + domain[1]
-
 
 @timer
 def index_files(path: str, index: AbstractIndex) -> None:
@@ -94,6 +94,9 @@ def main():
     # Michaels directory
     # data_directory = '/Users/michaelmaaseide/Desktop/P01-verify-dataset'
 
+    # Generate Search Sets
+    generate_search_set(4000, data_directory)
+
     # Sorted Array
     # sortarr_index = SortedArray()
     # index_files(data_directory, sortarr_index)
@@ -125,8 +128,8 @@ def main():
     # search_results = avl_index.search(search)
     # print(f"Files with {search}: {search_results}")
     # save_pickle(avl_index, "avlindex.pkl")
-    loaded_index = access_pickle(data_directory)
-    #print(loaded_index.get_keys())
+    # loaded_index = access_pickle(data_directory)
+    # print(loaded_index.get_keys())
 
     # # Hash Map
     # hash_index = HashMapIndex(250049)
