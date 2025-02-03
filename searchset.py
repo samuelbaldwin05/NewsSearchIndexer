@@ -1,6 +1,12 @@
 import random
-from assign_01 import access_pickle
 from indexer.util.timer import timer
+import pickle
+
+
+def access_pickle(file_name):
+    """" Access previously pickled info using given file name"""
+    with open(file_name, "rb") as file:
+        return pickle.load(file)
 
 @timer
 def generate_search_set(n, data_directory):
@@ -13,10 +19,11 @@ def generate_search_set(n, data_directory):
 
     search_sets = []
     for i in range(8):
-        component_a = random.sample(keys, n)
-        component_b = [''.join(random.sample(component_a, random.choice([2, 3]))) for i in range(n // 4)]
-        component_c = [''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=8)) for i in range(n)]
-        component_d = [' '.join(random.sample(component_c, random.choice([2, 3]))) for i in range(n // 4)]
+        k = n[i]
+        component_a = random.sample(keys, k)
+        component_b = [''.join(random.sample(component_a, random.choice([2, 3]))) for i in range(k // 4)]
+        component_c = [''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=8)) for i in range(k)]
+        component_d = [' '.join(random.sample(component_c, random.choice([2, 3]))) for i in range(k // 4)]
 
         search_set = component_a + component_b + component_c + component_d
         random.shuffle(search_set)

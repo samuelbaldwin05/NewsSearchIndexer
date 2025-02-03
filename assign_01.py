@@ -93,9 +93,12 @@ def main():
     # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
     # Michaels directory
     # data_directory = '/Users/michaelmaaseide/Desktop/P01-verify-dataset'
+    data_directory = '/Users/michaelmaaseide/Desktop/avl_index.pkl'
 
     # Generate Search Sets
-    generate_search_set(4000, data_directory)
+    length_lst = [4000,5000,6000,7000,8000,9000,10000,11000]
+    sets = generate_search_set(length_lst, data_directory)
+    print(sets)
 
     # Sorted Array
     # sortarr_index = SortedArray()
