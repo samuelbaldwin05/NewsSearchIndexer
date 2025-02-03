@@ -44,6 +44,9 @@ class SortedArray:
         index, exists = self.binary_search(term)
         if exists:
             return self.keys[index].values
+        else:
+            return []
+
     def result(self):
         """ Displays entire sorted array"""
         return [(node.term, node.values) for node in self.keys]

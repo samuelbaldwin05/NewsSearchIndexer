@@ -63,12 +63,10 @@ class BinarySearchTreeIndex(AbstractIndex):
             key (Any): The key to search for.
         Returns:
             List[Any]: A list of values associated with the key.
-        Raises:
-            KeyError: If the key is not found in the tree.
         """
         
         if node is None:
-            raise KeyError(f"Key {key} not found in the tree.")
+            return []
         if key < node.key:
             return self._search_recursive(node.left, key)
         elif key > node.key:
@@ -190,17 +188,17 @@ class BinarySearchTreeIndex(AbstractIndex):
         """
         return self._tree_height(self.root)
     
-    def get_keys_in_order(self) -> List[Any]:
+    def get_keyvalues_in_order(self) -> List[Any]:
         """
         Returns a list of keys in the binary search tree in ascending order.
 
         Returns:
             List[Any]: A list of keys in ascending order.
         """
-        keys: List[Any] = []
+        keys_values: List[tuple] = []
         for node in self:
-            keys.append(node.key)
-        return keys
+            keys_values.append((node.key, node.values))
+        return keys_values
     
     def get_leaf_keys(self) -> List[Any]:
         """

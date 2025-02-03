@@ -42,7 +42,7 @@ class LinkedList:
             if current.term == term:
                 return current.document_ids
             current = current.next
-        return print('Node not in linked list.')
+        return []
 
     def remove(self, term):
         current = self.head

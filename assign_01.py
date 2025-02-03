@@ -12,6 +12,7 @@ from indexer.linkedlist.linklist import LinkedList
 from indexer.maps.hash_map import HashMapIndex
 from indexer.trees.avl_tree import AVLTreeIndex
 from indexer.trees.bst_index import BinarySearchTreeIndex
+from eda import graph_common_words
 
 
 def process_titles(title):
@@ -89,16 +90,16 @@ def access_pickle(file_name):
 def main():
     # Directories
     # Sams directory
-    data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\avl_index.pkl"
-    # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
+    # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\avl_index.pkl"
+    data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
+    # bst_pickle = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\bst_index.pkl"
     # Michaels directory
     # data_directory = '/Users/michaelmaaseide/Desktop/P01-verify-dataset'
-    data_directory = '/Users/michaelmaaseide/Desktop/avl_index.pkl'
 
     # Generate Search Sets
-    length_lst = [4000,5000,6000,7000,8000,9000,10000,11000]
-    sets = generate_search_set(length_lst, data_directory)
-    print(sets)
+    # length_lst = [4000,5000,6000,7000,8000,9000,10000,11000]
+    # sets = generate_search_set(length_lst, data_directory)
+    # print(sets)
 
     # Sorted Array
     # sortarr_index = SortedArray()
@@ -108,17 +109,21 @@ def main():
     # print(sortarr_index.result())
 
     # BST test
-    # bst_index = BinarySearchTreeIndex()
+    bst_index = BinarySearchTreeIndex()
     # index_files(data_directory, bst_index)
-    # print(bst_index.get_keys_in_order())
+    # # access_pickle(bst_pickle)
+    # data = (bst_index.get_keyvalues_in_order())
+    # # print(data)
+    # # graph_common_words(data, 10)
     # search_word = 'act'
     # search_results = bst_index.search(search_word)
     # print(f"Files with {search_word}: {search_results}")
-    # print(bst_index.get_keys_in_order())
 
     # Linked List
     # ll_index = LinkedList()
     # index_files(data_directory, ll_index)
+    # search_results = ll_index.search(search_word)
+    # print(f"Files with {search_word}: {search_results}")
     # save_pickle(ll_index, "llindex.pkl")
 
     # AVL Tree
@@ -134,7 +139,7 @@ def main():
     # loaded_index = access_pickle(data_directory)
     # print(loaded_index.get_keys())
 
-    # # Hash Map
+    # # # Hash Map
     # hash_index = HashMapIndex(250049)
     # index_files(data_directory, hash_index)
     # search = 'act'
