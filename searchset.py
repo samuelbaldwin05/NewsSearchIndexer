@@ -8,7 +8,6 @@ def access_pickle(file_name):
     with open(file_name, "rb") as file:
         return pickle.load(file)
 
-@timer
 def generate_search_set(n, data_directory):
     """
     Generate a search set using indexed terms with the given contraints a,b,c,d

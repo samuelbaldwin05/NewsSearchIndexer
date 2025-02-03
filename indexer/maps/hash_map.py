@@ -64,6 +64,16 @@ class HashMapIndex():
                 current = current.next
         return keys
 
+    def get_unique_values(self) -> int:
+        """ Returns number of unique values"""
+        unique_values = set()
+        for index in range(self.capacity):
+            current = self.table[index]
+            while current:
+                unique_values.add(current.value)
+                current = current.next
+
+        return len(unique_values)
 
 class Node: 
     def __init__(self, term, value): 

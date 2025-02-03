@@ -9,10 +9,6 @@ import pandas as pd
 import pickle
 from searchset import generate_search_set
 
-def generate_unique_id():
-    return str(uuid.uuid4())
-
-
 @timer
 def experiment(df, structure, search, com_type, mem_size, index_type, n):
     """
@@ -23,9 +19,9 @@ def experiment(df, structure, search, com_type, mem_size, index_type, n):
     """
 
     num_tokens = len(search)
-    uniqueid = generate_unique_id()
+    uniqueid = df.shape[0] + 1
+    search_base_set_size = len(structure.get_keys())
     num_docs = 0
-
     for term in search:
         doc_list = structure.search(term)
         if doc_list:
@@ -39,7 +35,7 @@ def experiment(df, structure, search, com_type, mem_size, index_type, n):
         "num_docs_indexed": num_docs,
         "num_tokens_indexed": num_tokens,
         "search_set_base_size": n,
-        "search_time": 00
+        "search_time (ns)": 00
     }
 
     return df._append(new_row, ignore_index=True)
@@ -61,23 +57,26 @@ def main():
         "num_docs_indexed",
         "num_tokens_indexed",
         "search_set_base_size",
-        "search_time"
+        "search_time (ns)"
     ]
     df = pd.DataFrame(columns=columns)
 
     # Getting indexing structure into file
-    pickle_data = '/Users/michaelmaaseide/Desktop/avl_index.pkl'
+    # pickle_data = '/Users/michaelmaaseide/Desktop/avl_index.pkl'
+    pickle_data = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\avl_index.pkl"
     avl = access_pickle(pickle_data)
 
     # Creating searching sets
     length_lst = [4000,5000,6000,7000,8000,9000,10000,11000]
     sets = generate_search_set(length_lst, pickle_data)
-
+    print(len(sets))
+    print(len(sets[0]))
+    data = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\bst_index.pkl"
     # Running experiment on searching set one time
-    new_df = experiment(df, avl, sets[0], 'M2 Max', 32, 'AVL', length_lst[0])
-    print(new_df['num_tokens_indexed'])
-    print(new_df['num_docs_indexed'])
-    print(new_df['search_set_base_size'])
+    new_df, search_time = experiment(df, avl, sets[0], 'M2 Max', 32, 'AVL', length_lst[0])
+    new_df.loc[new_df.index[-1], "search_time (ns)"] = search_time
+
+    print(new_df.head())
 
 
 if __name__ == "__main__":

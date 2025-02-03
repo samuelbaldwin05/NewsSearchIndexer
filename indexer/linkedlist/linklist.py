@@ -70,6 +70,15 @@ class LinkedList:
             current = current.next
         return keys
 
+    def get_unique_values(self) -> int:
+        unique_values = set()
+        current = self.head
+        while current:
+            unique_values.add(current.document_ids)
+            current = current.next
+
+        return len(unique_values)
+
     def display(self):
         current = self.head
         while current:

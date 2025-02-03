@@ -40,7 +40,6 @@ def domain_name(url):
     else:
         return domain[0] + "." + domain[1]
 
-@timer
 def index_files(path: str, index: AbstractIndex) -> None:
     path = Path(path)
 

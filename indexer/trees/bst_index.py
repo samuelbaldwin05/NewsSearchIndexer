@@ -212,6 +212,13 @@ class BinarySearchTreeIndex(AbstractIndex):
             keys.append(node.key)
         return keys
 
+    def get_unique_values(self) -> int:
+        """ Return number of unique values"""
+        unique_values = set()
+        for node in self:
+            unique_values.add(node.values)
+        return len(unique_values)
+
     def get_leaf_keys(self) -> List[Any]:
         """
         Returns a list of keys of all the leaf nodes in the binary search tree.

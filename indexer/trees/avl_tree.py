@@ -161,3 +161,7 @@ class AVLTreeIndex(BinarySearchTreeIndex):
         keys: List[Any] = []
         self._inorder_traversal(self.root, keys)
         return keys
+
+
+    def get_unique_values(self) -> int:
+        self.BinarySearchTreeIndex().get_unique_values()

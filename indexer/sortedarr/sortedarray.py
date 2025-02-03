@@ -56,3 +56,10 @@ class SortedArray:
     def get_keys(self) -> List[Any]:
         """Returns a list of all terms in the sorted array."""
         return [node.term for node in self.keys]
+
+    def get_unique_values(self) -> int:
+        """Returns the number of unique values"""
+        unique_values = set()
+        for node in self.keys:
+            unique_values.update(node.values)
+        return len(unique_values)
