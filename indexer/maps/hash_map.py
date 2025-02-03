@@ -1,7 +1,6 @@
+from typing import Any, List
 
-
-  
-class HashMapIndex(): 
+class HashMapIndex():
     def __init__(self, capacity): 
         self.capacity = capacity
         self.table = [None] * capacity 
@@ -51,7 +50,21 @@ class HashMapIndex():
                 return
             previous = current 
             current = current.next
- 
+
+    def get_keys(self) -> List[Any]:
+        """
+        Returns:
+            List[Any]: A list of keys in ascending order.
+        """
+        keys: List[Any] = []
+        for index in range(self.capacity):
+            current = self.table[index]
+            while current:
+                keys.append(current.term)
+                current = current.next
+        return keys
+
+
 class Node: 
     def __init__(self, term, value): 
         self.term = term 

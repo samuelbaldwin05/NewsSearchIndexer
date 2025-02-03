@@ -199,7 +199,19 @@ class BinarySearchTreeIndex(AbstractIndex):
         for node in self:
             keys_values.append((node.key, node.values))
         return keys_values
-    
+
+    def get_keys(self) -> List[Any]:
+        """
+        Returns a list of keys in the binary search tree in ascending order.
+
+        Returns:
+            List[Any]: A list of keys in ascending order.
+        """
+        keys: List[Any] = []
+        for node in self:
+            keys.append(node.key)
+        return keys
+
     def get_leaf_keys(self) -> List[Any]:
         """
         Returns a list of keys of all the leaf nodes in the binary search tree.

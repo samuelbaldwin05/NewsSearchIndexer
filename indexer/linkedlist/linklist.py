@@ -1,3 +1,5 @@
+from typing import List, Any
+
 class Node:
     def __init__(self, term, document_id):
         self.term = term
@@ -59,6 +61,14 @@ class LinkedList:
             current = current.next
 
         return print('Node not in linked list.')
+
+    def get_keys(self) -> List[Any]:
+        keys: List[Any] = []
+        current = self.head
+        while current:
+            keys.append(current.term)
+            current = current.next
+        return keys
 
     def display(self):
         current = self.head

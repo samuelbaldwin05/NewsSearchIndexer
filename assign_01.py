@@ -91,8 +91,8 @@ def main():
     # Directories
     # Sams directory
     # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\avl_index.pkl"
-    data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
-    # bst_pickle = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\bst_index.pkl"
+    # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
+    bst_pickle = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\bst_index.pkl"
     # Michaels directory
     # data_directory = '/Users/michaelmaaseide/Desktop/P01-verify-dataset'
 
@@ -104,17 +104,19 @@ def main():
     # Sorted Array
     # sortarr_index = SortedArray()
     # index_files(data_directory, sortarr_index)
+    # keys = sortarr_index.get_keys()
+    # print(len(keys))
     # search = "act"
     # print(sortarr_index.search(search))
     # print(sortarr_index.result())
 
     # BST test
-    bst_index = BinarySearchTreeIndex()
+    # bst_index = BinarySearchTreeIndex()
     # index_files(data_directory, bst_index)
-    # # access_pickle(bst_pickle)
-    # data = (bst_index.get_keyvalues_in_order())
-    # # print(data)
-    # # graph_common_words(data, 10)
+    #save_pickle(bst_index, 'bst.pkl')
+    bst_index = access_pickle(bst_pickle)
+    data = bst_index.get_keyvalues_in_order()
+    graph_common_words(data, 10)
     # search_word = 'act'
     # search_results = bst_index.search(search_word)
     # print(f"Files with {search_word}: {search_results}")
@@ -122,6 +124,8 @@ def main():
     # Linked List
     # ll_index = LinkedList()
     # index_files(data_directory, ll_index)
+    # keys = ll_index.get_keys()
+    # print(len(keys))
     # search_results = ll_index.search(search_word)
     # print(f"Files with {search_word}: {search_results}")
     # save_pickle(ll_index, "llindex.pkl")
@@ -139,11 +143,13 @@ def main():
     # loaded_index = access_pickle(data_directory)
     # print(loaded_index.get_keys())
 
-    # # # Hash Map
+    # Hash Map
     # hash_index = HashMapIndex(250049)
     # index_files(data_directory, hash_index)
     # search = 'act'
     # search_results = hash_index.search(search)
+    # terms = hash_index.get_terms()
+    # print(len(terms))
     # print(f"Files with {search}: {search_results}")
 
 if __name__ == "__main__":

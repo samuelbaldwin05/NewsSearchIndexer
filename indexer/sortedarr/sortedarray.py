@@ -1,8 +1,10 @@
+from typing import List, Any
+
 class Node:
     def __init__(self, term):
         """Node in the sorted array which uses the term as a key and list """
-        self.values = []
         self.term = term
+        self.values = []
 
 
     def add_file(self, filename):
@@ -50,3 +52,7 @@ class SortedArray:
     def result(self):
         """ Displays entire sorted array"""
         return [(node.term, node.values) for node in self.keys]
+
+    def get_keys(self) -> List[Any]:
+        """Returns a list of all terms in the sorted array."""
+        return [node.term for node in self.keys]
