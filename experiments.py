@@ -1,3 +1,5 @@
+from re import search
+from assign_01 import index_files
 from indexer.util.timer import timer
 from indexer.sortedarr.sortedarray import SortedArray
 from indexer.linkedlist.linklist import LinkedList
@@ -17,22 +19,20 @@ def experiment(df, structure, search, com_type, mem_size, index_type, n):
     Does: Searches for each token in the searching set to see if its in the indexing structure, records all the data
     points from the experiment and then appends the data to our df
     """
-
+    uniquedocs = set()
     num_tokens = len(search)
     uniqueid = df.shape[0] + 1
-    search_base_set_size = len(structure.get_keys())
-    num_docs = 0
     for term in search:
-        doc_list = structure.search(term)
-        if doc_list:
-            num_docs += len(doc_list)
+        docs = structure.search(term)
+        for doc in docs:
+            uniquedocs.add(doc)
 
     new_row = {
         "run_id": uniqueid,
         "compute_proc_type": com_type,
         "primary_memory_size": mem_size,
         "index_type": index_type,
-        "num_docs_indexed": num_docs,
+        "num_docs_indexed": len(uniquedocs),
         "num_tokens_indexed": num_tokens,
         "search_set_base_size": n,
         "search_time (ns)": 00
@@ -47,23 +47,28 @@ def access_pickle(file_name):
         return pickle.load(file)
 
 
-def run_experiments(df, pickles, com_type, mem_size):
-    structures = []
-    for pickle in pickles:
-        structure = access_pickle(pickle)
-        structures.append(structure)
+def run_experiments(df, structures, avl, com_type, mem_size):
 
     length_lst = [4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000]
-    sets = generate_search_set(length_lst, pickles[0])
+    sets = generate_search_set(length_lst, avl)
+    snames = ['AVL Tree', 'Sorted Array', 'BST', 'Hash Map', 'Linked List']
+    counter = 0
 
     # Running experiments on all structures and sets
-    for i in range(4):
+    for i in range(5):
         for k in range(8):
             for j in range(5):
-                df, search_time = experiment(df, structures[i], sets[k], com_type, mem_size, 'AVL', length_lst[k])
-                df.loc[df.index[-1], "search_time (ns)"] = search_time
+                df, search_time = experiment(df, structures[i], sets[k], com_type, mem_size, snames[i], length_lst[k])
+                df.loc[counter, "search_time (ns)"] = search_time
+                counter += 1
 
-    return df
+    uniquedocs = set()
+    for term in sets[0]:
+        docs = structures[0].search(term)
+        for doc in docs:
+            uniquedocs.add(doc)
+
+    return df, uniquedocs
 
 
 def main():
@@ -80,29 +85,30 @@ def main():
     ]
     df = pd.DataFrame(columns=columns)
 
-    # Getting indexing structure into file
-    # pickle_data = '/Users/michaelmaaseide/Desktop/avl_index.pkl'
-    # # pickle_data = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\avl_index.pkl"
-    # avl = access_pickle(pickle_data)
-    #
-    # # Creating searching sets
-    # length_lst = [4000,5000,6000,7000,8000,9000,10000,11000]
-    # sets = generate_search_set(length_lst, pickle_data)
-    # print(len(sets))
-    # print(len(sets[0]))
-    # data = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\bst_index.pkl"
-    # Running experiment on searching set one time
-
-
-    # new_df, search_time = experiment(df, avl, sets[0], 'M2 Max', 32, 'AVL', length_lst[0])
-    # new_df.loc[new_df.index[-1], "search_time (ns)"] = search_time
-    #
-    # print(new_df.head())
-
     # Running experiments
     pickles = ['/Users/michaelmaaseide/Desktop/avl_index.pkl','/Users/michaelmaaseide/Desktop/sortarr.pkl',
-               '/Users/michaelmaaseide/Desktop/bst_index.pkl','/Users/michaelmaaseide/Desktop/hashindex.pkl']
-    run_experiments(df, pickles, 'M2 Max', 32)
+               '/Users/michaelmaaseide/Desktop/bst_index.pkl']
+    structures = []
+    for pickle in pickles:
+        structure = access_pickle(pickle)
+        structures.append(structure)
+
+    data_directory = '/Users/michaelmaaseide/Desktop/USFinancialNewsArticles-preprocessed'
+    hash_index = HashMapIndex(250049)
+    index_files(data_directory, hash_index)
+    structures.append(hash_index)
+
+    ll_index = LinkedList()
+    index_files(data_directory, ll_index, restriction = 1)
+    structures.append(ll_index)
+
+    df, doclist = run_experiments(df, structures, pickles[0],'M2 Max', 32)
+    print(df)
+
+    with open("timing_data/doclist_for_AVL_searchset1.txt", "w") as file:
+        file.writelines(f"{item}\n" for item in doclist)
+
+    df.to_csv('timing_data.csv', index=False)
 
 
 if __name__ == "__main__":

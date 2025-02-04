@@ -40,14 +40,13 @@ def domain_name(url):
     else:
         return domain[0] + "." + domain[1]
 
-def index_files(path: str, index: AbstractIndex) -> None:
+def index_files(path: str, index: AbstractIndex, restriction = 0) -> None:
     path = Path(path)
 
     if path is not None:
         print(f"path = {path}")
-
+    counter = 0
     for file in path.rglob("*.json"):
-        counter = 0
         # Load data
         file_data = json.loads(file.read_text(encoding="utf-8"))
 
@@ -78,7 +77,7 @@ def index_files(path: str, index: AbstractIndex) -> None:
             index.insert(word, file_name)
 
         counter += 1
-        if counter == 7000:
+        if counter == 6500 and restriction == 1:
             return
 
 def save_pickle(index, file_name):
@@ -95,10 +94,10 @@ def main():
     # Directories
     # Sams directory
     # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\avl_index.pkl"
-    data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
+    # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
     bst_pickle = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\bst_index.pkl"
     # Michaels directory
-    # data_directory = '/Users/michaelmaaseide/Desktop/USFinancialNewsArticles-preprocessed'
+    data_directory = '/Users/michaelmaaseide/Desktop/hashindex.pkl'
 
     # Generate Search Sets
     # length_lst = [4000,5000,6000,7000,8000,9000,10000,11000]
@@ -106,13 +105,13 @@ def main():
     # print(sets)
 
     # Sorted Array
-    sortarr_index = SortedArray()
-    #index_files(data_directory, sortarr_index)
-    #print(sortarr_index.get_unique_values())
-    index_files(data_directory, sortarr_index)
-    save_pickle(sortarr_index, "sortarr.pkl")
-    # keys = sortarr_index.get_keys()
-    # print(len(keys))
+    # sortarr_index = SortedArray()
+    # #index_files(data_directory, sortarr_index)
+    # #print(sortarr_index.get_unique_values())
+    # index_files(data_directory, sortarr_index)
+    # # save_pickle(sortarr_index, "sortarr.pkl")
+    # # keys = sortarr_index.get_keys()
+    # # print(len(keys))
     # search = "act"
     # print(sortarr_index.search(search))
     # print(sortarr_index.result())
@@ -134,8 +133,8 @@ def main():
     #index_files(data_directory, ll_index)
     #print(ll_index.get_unique_values())
     #print
-    index_files(data_directory, ll_index)
-    save_pickle(ll_index, "llindex.pkl")
+    # index_files(data_directory, ll_index)
+    # save_pickle(ll_index, "llindex.pkl")
     # keys = ll_index.get_keys()
     # print(len(keys))
     # search_results = ll_index.search(search_word)
@@ -157,13 +156,11 @@ def main():
 
     # Hash Map
     hash_index = HashMapIndex(250049)
-    # index_files(data_directory, hash_index)
-    # print(hash_index.get_unique_values())
-    # search = 'act'
-    # search_results = hash_index.search(search)
-    # terms = hash_index.get_terms()
-    # print(len(terms))
-    # print(f"Files with {search}: {search_results}")
+    index_files(data_directory, hash_index)
+    #print(hash_index.get_unique_values())
+    search = 'act'
+    search_results = hash_index.search(search)
+    print(f"Files with {search}: {search_results}")
 
 if __name__ == "__main__":
     main()
