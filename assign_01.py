@@ -107,13 +107,10 @@ def main():
 
     # Sorted Array
     sortarr_index = SortedArray()
-<<<<<<< HEAD
     #index_files(data_directory, sortarr_index)
     #print(sortarr_index.get_unique_values())
-=======
     index_files(data_directory, sortarr_index)
     save_pickle(sortarr_index, "sortarr.pkl")
->>>>>>> a3c71b0cc9fc2d07ac9a89694b24f4a3948e6983
     # keys = sortarr_index.get_keys()
     # print(len(keys))
     # search = "act"
@@ -134,14 +131,11 @@ def main():
 
     # Linked List
     ll_index = LinkedList()
-<<<<<<< HEAD
     #index_files(data_directory, ll_index)
     #print(ll_index.get_unique_values())
     #print
-=======
     index_files(data_directory, ll_index)
     save_pickle(ll_index, "llindex.pkl")
->>>>>>> a3c71b0cc9fc2d07ac9a89694b24f4a3948e6983
     # keys = ll_index.get_keys()
     # print(len(keys))
     # search_results = ll_index.search(search_word)
