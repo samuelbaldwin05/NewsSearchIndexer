@@ -92,7 +92,7 @@ class AVLTreeIndex(BinarySearchTreeIndex):
         Returns:
             AVLNode: The updated AVL tree with the new node inserted.
         """
-        # Perform standard BST insertion (but with AVLNode)
+        # Insertion
         if current is None:
             new_node = AVLNode(key)
             new_node.add_value(value)
@@ -101,15 +101,15 @@ class AVLTreeIndex(BinarySearchTreeIndex):
             current.left = self._insert_recursive(current.left, key, value)
         elif key > current.key:
             current.right = self._insert_recursive(current.right, key, value)
+        # Else: key exists so append
         else:
-            # Key exists: append value and return early (no structural changes)
             current.add_value(value)
             return current
 
         # Update height of current node
         current.height = 1 + max(self._height(current.left), self._height(current.right))
 
-        # Check balance factor and rotate if needed
+        # Check balance and rotate
         balance = self._height(current.left) - self._height(current.right)
         # LL
         if balance > 1 and key < current.left.key:

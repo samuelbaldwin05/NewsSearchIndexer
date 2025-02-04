@@ -48,7 +48,10 @@ def graph_common_domains(data, max_keys):
     plt.show()
 
 def plot_search_time(df):
-    """ Given search time dataframe, plot a line of
+    """ Given search time dataframe, create a line plot with a line for each index
+    structure showing the mean time across the results for each index at each search set size,
+    compared to the search set size
+
     """
     # Group by structure and search set size, getting mean search time
     avg_times = df.groupby(['index_type', 'search_set_base_size'])['search_time (ns)'].mean().reset_index()
