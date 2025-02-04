@@ -162,6 +162,16 @@ class AVLTreeIndex(BinarySearchTreeIndex):
         self._inorder_traversal(self.root, keys)
         return keys
 
+    def collect_unique_values(self, current: Optional[AVLNode], unique_values: set) -> None:
+        """Gets unique values by traversing"""
+        if current is None:
+            return
+        self.collect_unique_values(current.left, unique_values)
+        unique_values.update(current.values)
+        self.collect_unique_values(current.right, unique_values)
 
     def get_unique_values(self) -> int:
-        self.BinarySearchTreeIndex().get_unique_values()
+        """Returns number of unique values"""
+        unique_values = set()
+        self.collect_unique_values(self.root, unique_values)
+        return len(unique_values)

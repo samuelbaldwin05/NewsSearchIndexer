@@ -74,7 +74,7 @@ class LinkedList:
         unique_values = set()
         current = self.head
         while current:
-            unique_values.add(current.document_ids)
+            unique_values.update(current.document_ids)
             current = current.next
 
         return len(unique_values)

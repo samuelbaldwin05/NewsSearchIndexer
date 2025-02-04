@@ -90,7 +90,7 @@ def main():
     # Directories
     # Sams directory
     # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\avl_index.pkl"
-    # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
+    data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
     bst_pickle = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\bst_index.pkl"
     # Michaels directory
     # data_directory = '/Users/michaelmaaseide/Desktop/P01-verify-dataset'
@@ -101,8 +101,9 @@ def main():
     # print(sets)
 
     # Sorted Array
-    # sortarr_index = SortedArray()
-    # index_files(data_directory, sortarr_index)
+    sortarr_index = SortedArray()
+    #index_files(data_directory, sortarr_index)
+    #print(sortarr_index.get_unique_values())
     # keys = sortarr_index.get_keys()
     # print(len(keys))
     # search = "act"
@@ -110,19 +111,22 @@ def main():
     # print(sortarr_index.result())
 
     # BST test
-    # bst_index = BinarySearchTreeIndex()
-    # index_files(data_directory, bst_index)
+    bst_index = BinarySearchTreeIndex()
+    #index_files(data_directory, bst_index)
+    #print(bst_index.get_unique_values())
     #save_pickle(bst_index, 'bst.pkl')
-    bst_index = access_pickle(bst_pickle)
-    data = bst_index.get_keyvalues_in_order()
-    graph_common_words(data, 10)
+    # bst_index = access_pickle(bst_pickle)
+    # data = bst_index.get_keyvalues_in_order()
+    # graph_common_words(data, 10)
     # search_word = 'act'
     # search_results = bst_index.search(search_word)
     # print(f"Files with {search_word}: {search_results}")
 
     # Linked List
-    # ll_index = LinkedList()
-    # index_files(data_directory, ll_index)
+    ll_index = LinkedList()
+    #index_files(data_directory, ll_index)
+    #print(ll_index.get_unique_values())
+    #print
     # keys = ll_index.get_keys()
     # print(len(keys))
     # search_results = ll_index.search(search_word)
@@ -130,8 +134,9 @@ def main():
     # save_pickle(ll_index, "llindex.pkl")
 
     # AVL Tree
-    # avl_index = AVLTreeIndex()
+    avl_index = AVLTreeIndex()
     # index_files(data_directory, avl_index)
+    # print(avl_index.get_unique_values())
     # keys = avl_index.get_keys()
     # print(len(keys))
     # print("Height:", avl_index._height(avl_index.root))
@@ -143,8 +148,9 @@ def main():
     # print(loaded_index.get_keys())
 
     # Hash Map
-    # hash_index = HashMapIndex(250049)
+    hash_index = HashMapIndex(250049)
     # index_files(data_directory, hash_index)
+    # print(hash_index.get_unique_values())
     # search = 'act'
     # search_results = hash_index.search(search)
     # terms = hash_index.get_terms()

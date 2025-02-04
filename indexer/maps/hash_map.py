@@ -70,7 +70,7 @@ class HashMapIndex():
         for index in range(self.capacity):
             current = self.table[index]
             while current:
-                unique_values.add(current.value)
+                unique_values.update(current.value)
                 current = current.next
 
         return len(unique_values)
