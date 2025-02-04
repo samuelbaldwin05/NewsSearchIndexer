@@ -37,7 +37,7 @@ def experiment(df, structure, search, com_type, mem_size, index_type, n):
         "search_set_base_size": n,
         "search_time (ns)": 00
     }
-
+    print(new_row)
     return df._append(new_row, ignore_index=True)
 
 
@@ -54,16 +54,16 @@ def run_experiments(df, pickles, com_type, mem_size):
         structures.append(structure)
 
     length_lst = [4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000]
-    sets = generate_search_set(length_lst, structures[0])
+    sets = generate_search_set(length_lst, pickles[0])
 
     # Running experiments on all structures and sets
-    for i in range(5):
+    for i in range(4):
         for k in range(8):
             for j in range(5):
-                new_df, search_time = experiment(df, structures[i], sets[k], com_type, mem_size, 'AVL', length_lst[k])
-                new_df.loc[new_df.index[-1], "search_time (ns)"] = search_time
+                df, search_time = experiment(df, structures[i], sets[k], com_type, mem_size, 'AVL', length_lst[k])
+                df.loc[df.index[-1], "search_time (ns)"] = search_time
 
-    return new_df
+    return df
 
 
 def main():
@@ -81,21 +81,28 @@ def main():
     df = pd.DataFrame(columns=columns)
 
     # Getting indexing structure into file
-    pickle_data = '/Users/michaelmaaseide/Desktop/avl_index.pkl'
-    # pickle_data = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\avl_index.pkl"
-    avl = access_pickle(pickle_data)
-
-    # Creating searching sets
-    length_lst = [4000,5000,6000,7000,8000,9000,10000,11000]
-    sets = generate_search_set(length_lst, pickle_data)
-    print(len(sets))
-    print(len(sets[0]))
-    data = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\bst_index.pkl"
+    # pickle_data = '/Users/michaelmaaseide/Desktop/avl_index.pkl'
+    # # pickle_data = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\avl_index.pkl"
+    # avl = access_pickle(pickle_data)
+    #
+    # # Creating searching sets
+    # length_lst = [4000,5000,6000,7000,8000,9000,10000,11000]
+    # sets = generate_search_set(length_lst, pickle_data)
+    # print(len(sets))
+    # print(len(sets[0]))
+    # data = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\bst_index.pkl"
     # Running experiment on searching set one time
-    new_df, search_time = experiment(df, avl, sets[0], 'M2 Max', 32, 'AVL', length_lst[0])
-    new_df.loc[new_df.index[-1], "search_time (ns)"] = search_time
 
-    print(new_df.head())
+
+    # new_df, search_time = experiment(df, avl, sets[0], 'M2 Max', 32, 'AVL', length_lst[0])
+    # new_df.loc[new_df.index[-1], "search_time (ns)"] = search_time
+    #
+    # print(new_df.head())
+
+    # Running experiments
+    pickles = ['/Users/michaelmaaseide/Desktop/avl_index.pkl','/Users/michaelmaaseide/Desktop/sortarr.pkl',
+               '/Users/michaelmaaseide/Desktop/bst_index.pkl','/Users/michaelmaaseide/Desktop/hashindex.pkl']
+    run_experiments(df, pickles, 'M2 Max', 32)
 
 
 if __name__ == "__main__":
