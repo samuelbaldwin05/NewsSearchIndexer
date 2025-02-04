@@ -2,17 +2,17 @@ import json
 import pickle
 import re
 from pathlib import Path
-from searchset import generate_search_set
-#from experiments import experiments
-from indexer.util.timer import timer
+from typing import Optional
+
 from indexer.abstract_index import AbstractIndex
+from eda import graph_common_words, graph_common_domains
 # Structure imports
 from indexer.sortedarr.sortedarray import SortedArray
 from indexer.linkedlist.linklist import LinkedList
 from indexer.maps.hash_map import HashMapIndex
 from indexer.trees.avl_tree import AVLTreeIndex
 from indexer.trees.bst_index import BinarySearchTreeIndex
-from eda import graph_common_words
+
 
 
 def process_titles(title):
@@ -40,7 +40,11 @@ def domain_name(url):
     else:
         return domain[0] + "." + domain[1]
 
-def index_files(path: str, index: AbstractIndex, restriction = 0) -> None:
+def index_files(path: str, index: AbstractIndex, count: Optional[int] = None) -> None:
+    """ Given a folder path and a structure index, read in the preprocessed words, author name, url, and title,
+    preprocessing the author name to get last name, url to get domain, and title to break into words. Insert each
+    of the preprocessed items into the given structure. Additionally, if a count is given, only iterate through
+    the desired number of files"""
     path = Path(path)
 
     if path is not None:
@@ -76,9 +80,10 @@ def index_files(path: str, index: AbstractIndex, restriction = 0) -> None:
         for word in words:
             index.insert(word, file_name)
 
+        # Counter for only indexing a given number of files
         counter += 1
-        if counter == 6500 and restriction == 1:
-            return
+        if counter == count and count is not None:
+            break
 
 def save_pickle(index, file_name):
     """ Given indexed key values and a desired file name, pickle the info for easy access later"""
@@ -93,74 +98,59 @@ def access_pickle(file_name):
 def main():
     # Directories
     # Sams directory
-    # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\avl_index.pkl"
+    data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\bst_index.pkl"
     # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
-    bst_pickle = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\bst_index.pkl"
     # Michaels directory
-    data_directory = '/Users/michaelmaaseide/Desktop/hashindex.pkl'
+    # data_directory = '/Users/michaelmaaseide/Desktop/hashindex.pkl'
 
-    # Generate Search Sets
-    # length_lst = [4000,5000,6000,7000,8000,9000,10000,11000]
-    # sets = generate_search_set(length_lst, data_directory)
-    # print(sets)
-
+    ### PICKLING
     # Sorted Array
-    # sortarr_index = SortedArray()
-    # #index_files(data_directory, sortarr_index)
-    # #print(sortarr_index.get_unique_values())
+    sortarr_index = SortedArray()
     # index_files(data_directory, sortarr_index)
-    # # save_pickle(sortarr_index, "sortarr.pkl")
-    # # keys = sortarr_index.get_keys()
-    # # print(len(keys))
-    # search = "act"
-    # print(sortarr_index.search(search))
-    # print(sortarr_index.result())
+    # save_pickle(sortarr_index, "sortarr.pkl")
+    # search_word = "act"
+    # search_results = sortarr_index.search(search_word)
+    # print(f"Files with {search_word}: {search_results}")
 
-    # BST test
-    bst_index = BinarySearchTreeIndex()
-    #index_files(data_directory, bst_index)
-    #print(bst_index.get_unique_values())
-    #save_pickle(bst_index, 'bst.pkl')
+    # BST
+    # bst_index = BinarySearchTreeIndex()
+    # index_files(data_directory, bst_index)
+    # save_pickle(bst_index, 'bst.pkl')
     # bst_index = access_pickle(bst_pickle)
-    # data = bst_index.get_keyvalues_in_order()
-    # graph_common_words(data, 10)
     # search_word = 'act'
     # search_results = bst_index.search(search_word)
     # print(f"Files with {search_word}: {search_results}")
+    # Create EDA graphs
+    bst_index = access_pickle(data_directory)
+    data = bst_index.get_keyvalues_in_order()
+    # Common words
+    # graph_common_words(data, 10)
+    # Common domains
+    graph_common_domains(data, 5)
 
     # Linked List
     ll_index = LinkedList()
-    #index_files(data_directory, ll_index)
-    #print(ll_index.get_unique_values())
-    #print
     # index_files(data_directory, ll_index)
     # save_pickle(ll_index, "llindex.pkl")
-    # keys = ll_index.get_keys()
-    # print(len(keys))
     # search_results = ll_index.search(search_word)
     # print(f"Files with {search_word}: {search_results}")
 
     # AVL Tree
     avl_index = AVLTreeIndex()
     # index_files(data_directory, avl_index)
-    # print(avl_index.get_unique_values())
-    # keys = avl_index.get_keys()
-    # print(len(keys))
-    # print("Height:", avl_index._height(avl_index.root))
+    # save_pickle(avl_index, "avlindex.pkl")
     # search = 'act'
     # search_results = avl_index.search(search)
     # print(f"Files with {search}: {search_results}")
-    # save_pickle(avl_index, "avlindex.pkl")
-    # loaded_index = access_pickle(data_directory)
-    # print(loaded_index.get_keys())
+
 
     # Hash Map
-    hash_index = HashMapIndex(250049)
-    index_files(data_directory, hash_index)
-    #print(hash_index.get_unique_values())
-    search = 'act'
-    search_results = hash_index.search(search)
-    print(f"Files with {search}: {search_results}")
+    # hash_index = HashMapIndex(250049)
+    # index_files(data_directory, hash_index)
+    # print(hash_index.get_unique_values())
+    # search = 'act'
+    # search_results = hash_index.search(search)
+    # print(f"Files with {search}: {search_results}")
 
 if __name__ == "__main__":
     main()

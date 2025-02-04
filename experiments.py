@@ -1,15 +1,18 @@
 from re import search
+import uuid
+import pandas as pd
+import pickle
+
 from assign_01 import index_files
 from indexer.util.timer import timer
+from searchset import generate_search_set
+
+# Structures
 from indexer.sortedarr.sortedarray import SortedArray
 from indexer.linkedlist.linklist import LinkedList
 from indexer.maps.hash_map import HashMapIndex
 from indexer.trees.avl_tree import AVLTreeIndex
 from indexer.trees.bst_index import BinarySearchTreeIndex
-import uuid
-import pandas as pd
-import pickle
-from searchset import generate_search_set
 
 @timer
 def experiment(df, structure, search, com_type, mem_size, index_type, n):
@@ -48,7 +51,12 @@ def access_pickle(file_name):
 
 
 def run_experiments(df, structures, avl, com_type, mem_size):
-
+    """ Given dataframe, structures, avl, computer type, and memory size, create the search sets
+    using the avl tree, then run the experiments
+    for each of the 5 structures, and for each of the 8 length sizes, each 5 times to reduce error.
+    Update the data frame along the way, and return the final dataframe as well as a specific search
+    result set
+    """
     length_lst = [4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000]
     sets = generate_search_set(length_lst, avl)
     snames = ['AVL Tree', 'Sorted Array', 'BST', 'Hash Map', 'Linked List']
@@ -62,6 +70,7 @@ def run_experiments(df, structures, avl, com_type, mem_size):
                 df.loc[counter, "search_time (ns)"] = search_time
                 counter += 1
 
+    # Get specific search result
     uniquedocs = set()
     for term in sets[0]:
         docs = structures[0].search(term)
@@ -93,6 +102,7 @@ def main():
         structure = access_pickle(pickle)
         structures.append(structure)
 
+    # Manually add structures that were not pickling properly
     data_directory = '/Users/michaelmaaseide/Desktop/USFinancialNewsArticles-preprocessed'
     hash_index = HashMapIndex(250049)
     index_files(data_directory, hash_index)
@@ -104,11 +114,13 @@ def main():
 
     df, doclist = run_experiments(df, structures, pickles[0],'M2 Max', 32)
     print(df)
-
+    # Save specific search result
     with open("timing_data/doclist_for_AVL_searchset1.txt", "w") as file:
         file.writelines(f"{item}\n" for item in doclist)
 
+    # Save timing data
     df.to_csv('timing_data.csv', index=False)
+
 
 
 if __name__ == "__main__":
