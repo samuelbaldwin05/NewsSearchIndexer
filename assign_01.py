@@ -47,6 +47,7 @@ def index_files(path: str, index: AbstractIndex) -> None:
         print(f"path = {path}")
 
     for file in path.rglob("*.json"):
+        counter = 0
         # Load data
         file_data = json.loads(file.read_text(encoding="utf-8"))
 
@@ -76,6 +77,10 @@ def index_files(path: str, index: AbstractIndex) -> None:
         for word in words:
             index.insert(word, file_name)
 
+        counter += 1
+        if counter == 7000:
+            return
+
 def save_pickle(index, file_name):
     """ Given indexed key values and a desired file name, pickle the info for easy access later"""
     with open(file_name, "wb") as file:
@@ -93,7 +98,7 @@ def main():
     # data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
     bst_pickle = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\bst_index.pkl"
     # Michaels directory
-    # data_directory = '/Users/michaelmaaseide/Desktop/P01-verify-dataset'
+    # data_directory = '/Users/michaelmaaseide/Desktop/USFinancialNewsArticles-preprocessed'
 
     # Generate Search Sets
     # length_lst = [4000,5000,6000,7000,8000,9000,10000,11000]
@@ -101,8 +106,9 @@ def main():
     # print(sets)
 
     # Sorted Array
-    # sortarr_index = SortedArray()
-    # index_files(data_directory, sortarr_index)
+    sortarr_index = SortedArray()
+    index_files(data_directory, sortarr_index)
+    save_pickle(sortarr_index, "sortarr.pkl")
     # keys = sortarr_index.get_keys()
     # print(len(keys))
     # search = "act"
@@ -113,21 +119,21 @@ def main():
     # bst_index = BinarySearchTreeIndex()
     # index_files(data_directory, bst_index)
     #save_pickle(bst_index, 'bst.pkl')
-    bst_index = access_pickle(bst_pickle)
-    data = bst_index.get_keyvalues_in_order()
-    graph_common_words(data, 10)
+    # bst_index = access_pickle(bst_pickle)
+    # data = bst_index.get_keyvalues_in_order()
+    # graph_common_words(data, 10)
     # search_word = 'act'
     # search_results = bst_index.search(search_word)
     # print(f"Files with {search_word}: {search_results}")
 
     # Linked List
-    # ll_index = LinkedList()
-    # index_files(data_directory, ll_index)
+    ll_index = LinkedList()
+    index_files(data_directory, ll_index)
+    save_pickle(ll_index, "llindex.pkl")
     # keys = ll_index.get_keys()
     # print(len(keys))
     # search_results = ll_index.search(search_word)
     # print(f"Files with {search_word}: {search_results}")
-    # save_pickle(ll_index, "llindex.pkl")
 
     # AVL Tree
     # avl_index = AVLTreeIndex()

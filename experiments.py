@@ -47,6 +47,25 @@ def access_pickle(file_name):
         return pickle.load(file)
 
 
+def run_experiments(df, pickles, com_type, mem_size):
+    structures = []
+    for pickle in pickles:
+        structure = access_pickle(pickle)
+        structures.append(structure)
+
+    length_lst = [4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000]
+    sets = generate_search_set(length_lst, structures[0])
+
+    # Running experiments on all structures and sets
+    for i in range(5):
+        for k in range(8):
+            for j in range(5):
+                new_df, search_time = experiment(df, structures[i], sets[k], com_type, mem_size, 'AVL', length_lst[k])
+                new_df.loc[new_df.index[-1], "search_time (ns)"] = search_time
+
+    return new_df
+
+
 def main():
     # Creating df to be turned into our experiment csv
     columns = [
@@ -62,8 +81,8 @@ def main():
     df = pd.DataFrame(columns=columns)
 
     # Getting indexing structure into file
-    # pickle_data = '/Users/michaelmaaseide/Desktop/avl_index.pkl'
-    pickle_data = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\avl_index.pkl"
+    pickle_data = '/Users/michaelmaaseide/Desktop/avl_index.pkl'
+    # pickle_data = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\avl_index.pkl"
     avl = access_pickle(pickle_data)
 
     # Creating searching sets
