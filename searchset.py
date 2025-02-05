@@ -1,20 +1,17 @@
 import random
+from indexer.trees.avl_tree import AVLTreeIndex
+from assign_01 import index_files
 from indexer.util.timer import timer
 import pickle
-
-
-def access_pickle(file_name):
-    """" Access previously pickled info using given file name"""
-    with open(file_name, "rb") as file:
-        return pickle.load(file)
 
 def generate_search_set(n, data_directory):
     """
     Generate a search set using indexed terms with the given contraints a,b,c,d
     Returns a shuffled list of the terms
     """
-    avl = access_pickle(data_directory)
-    keys = avl.get_keys()
+    avl_index = AVLTreeIndex()
+    index_files(data_directory, avl_index)
+    keys = avl_index.get_keys()
 
     search_sets = []
     for i in range(8):

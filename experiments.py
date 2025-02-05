@@ -49,8 +49,33 @@ def access_pickle(file_name):
     with open(file_name, "rb") as file:
         return pickle.load(file)
 
+def index_all(data_directory):
+    """ Given a data directory index it using all the structures, returning a list of the indexed
+    structures """
+    structures = []
+    hash_index = HashMapIndex(250049)  # This value is the capacity of the hashmap
+    index_files(data_directory, hash_index)
+    structures.append(hash_index)
 
-def run_experiments(df, structures, avl, com_type, mem_size):
+    ll_index = LinkedList()
+    index_files(data_directory, ll_index, count=8000)  # We used count 8000 as the full dataset took too long
+    structures.append(ll_index)
+
+    avl_index = AVLTreeIndex()
+    index_files(data_directory, avl_index)
+    structures.append(avl_index)
+
+    bst_index = BinarySearchTreeIndex()
+    index_files(data_directory, bst_index)
+    structures.append(bst_index)
+
+    sorted_array_index = SortedArray()
+    index_files(data_directory, sorted_array_index)
+    structures.append(sorted_array_index)
+
+    return structures
+
+def run_experiments(df, structures, data_directory, com_type, mem_size):
     """ Given dataframe, structures, avl, computer type, and memory size, create the search sets
     using the avl tree, then run the experiments
     for each of the 5 structures, and for each of the 8 length sizes, each 5 times to reduce error.
@@ -58,7 +83,7 @@ def run_experiments(df, structures, avl, com_type, mem_size):
     result set
     """
     length_lst = [4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000]
-    sets = generate_search_set(length_lst, avl)
+    sets = generate_search_set(length_lst, data_directory)
     snames = ['AVL Tree', 'Sorted Array', 'BST', 'Hash Map', 'Linked List']
     counter = 0
 
@@ -81,7 +106,7 @@ def run_experiments(df, structures, avl, com_type, mem_size):
 
 
 def main():
-    # Creating df to be turned into our experiment csv
+    # Creating empty df to be turned into our experiment csv
     columns = [
         "run_id",
         "compute_proc_type",
@@ -94,34 +119,31 @@ def main():
     ]
     df = pd.DataFrame(columns=columns)
 
-    # Running experiments
-    pickles = ['/Users/michaelmaaseide/Desktop/avl_index.pkl','/Users/michaelmaaseide/Desktop/sortarr.pkl',
-               '/Users/michaelmaaseide/Desktop/bst_index.pkl']
-    structures = []
-    for pickle in pickles:
-        structure = access_pickle(pickle)
-        structures.append(structure)
+    # ONLY SPOT THAT NEEDS INPUT!!!!!!!!
+    # data_directory = '/Users/michaelmaaseide/Desktop/USFinancialNewsArticles-preprocessed'
+    data_directory = r"C:\Users\samba\OneDrive\Desktop\DS 4300 Large Scale Info\P01-verify-dataset"
+    computer_chip = 'M2 Max'
+    mem_size = 32
 
-    # Manually add structures that were not pickling properly
-    data_directory = '/Users/michaelmaaseide/Desktop/USFinancialNewsArticles-preprocessed'
-    hash_index = HashMapIndex(250049)
-    index_files(data_directory, hash_index)
-    structures.append(hash_index)
+    # Index structures
+    structures = index_all(data_directory)
 
-    ll_index = LinkedList()
-    index_files(data_directory, ll_index, restriction = 1)
-    structures.append(ll_index)
+    # If you want to call pickle, you can comment out the structures in index_all and load pickles here
+    # pickles = ['/Users/michaelmaaseide/Desktop/avl_index.pkl','/Users/michaelmaaseide/Desktop/sortarr.pkl',
+    #            '/Users/michaelmaaseide/Desktop/bst_index.pkl']
+    # for pickle in pickles:
+    #     structure = access_pickle(pickle)
+    #     structures.append(structure)
 
-    df, doclist = run_experiments(df, structures, pickles[0],'M2 Max', 32)
-    print(df)
+    # Run experiments function on all indexed structures
+    df, doclist = run_experiments(df, structures, data_directory, computer_chip, mem_size)
+
     # Save specific search result
-    with open("timing_data/doclist_for_AVL_searchset1.txt", "w") as file:
+    with open("search_results/doclist_for_AVL_searchset1=.txt", "w") as file:
         file.writelines(f"{item}\n" for item in doclist)
 
     # Save timing data
-    df.to_csv('timing_data.csv', index=False)
-
-
+    df.to_csv('timing_data/timing_data.csv', index=False)
 
 if __name__ == "__main__":
     main()
